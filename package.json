@@ -1,0 +1,20 @@
+{
+  "name": "@frankxai/suno-mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for Suno AI music generation",
+  "main": "dist/index.js",
+  "bin": {
+    "suno-mcp-server": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": ["suno", "mcp", "music", "ai-music", "claude-code", "model-context-protocol"],
+  "author": "FrankX <frank@frankx.ai>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frankxai/suno-mcp-server.git"
+  }
+}
