@@ -1,45 +1,185 @@
-﻿{
-    "name":  "suno-mcp-server",
-    "classification":  "agent-substrate",
-    "owner":  "FrankX AI",
-    "updated":  "2026-06-19",
-    "remote":  "https://github.com/frankxai/suno-mcp-server.git",
-    "health":  {
-                   "primaryCheck":  "npm run build",
-                   "manualChecks":  [
-                                        "Review AGENTS.md before edits",
-                                        "Preserve user work and dirty files",
-                                        "Scan public outputs for secrets and private memory"
-                                    ]
-               },
-    "agentGuidance":  {
-                          "readAgentsMd":  true,
-                          "avoidPrivateMemory":  true,
-                          "preserveExistingConventions":  true,
-                          "designTasteKernel":  {
-                                                    "enabled":  true,
-                                                    "root":  "C:\\Users\\frank\\starlight\\repos",
-                                                    "files":  [
-                                                                  "C:\\Users\\frank\\starlight\\repos\\DESIGN_TASTE.md",
-                                                                  "C:\\Users\\frank\\starlight\\repos\\WEB_EXPERIENCE_STANDARD.md",
-                                                                  "C:\\Users\\frank\\starlight\\repos\\MOTION_TASTE_RUBRIC.md",
-                                                                  "C:\\Users\\frank\\starlight\\repos\\MULTI_AGENT_DESIGN_COUNCIL.md",
-                                                                  "C:\\Users\\frank\\starlight\\repos\\VISUAL_QA_GATE.md"
-                                                              ],
-                                                    "appliesTo":  [
-                                                                      "site",
-                                                                      "app",
-                                                                      "landing-page",
-                                                                      "dashboard",
-                                                                      "visual-identity",
-                                                                      "brand",
-                                                                      "motion",
-                                                                      "media",
-                                                                      "social",
-                                                                      "frontend"
-                                                                  ],
-                                                    "motionPlugin":  "motion-design-studio",
-                                                    "visualVerificationRequired":  true
-                                                }
-                      }
+{
+  "schema_version": "starlight.repo_profile.v2",
+  "repo": {
+    "id": "suno-mcp-server",
+    "classification": "tooling",
+    "operating_unit": "music-media",
+    "lane": "arcanea",
+    "lifecycle": "active",
+    "priority": "now",
+    "canonical_source": {
+      "kind": "local-git",
+      "ref": "suno-mcp-server",
+      "nested_root": null
+    },
+    "default_branch": "main",
+    "visibility": "unknown"
+  },
+  "ownership": {
+    "human_owner": "Frank",
+    "steward_team": "music-media-release-team",
+    "support_lane": "music-is-ops"
+  },
+  "commands": {
+    "health": [
+      "pnpm run build"
+    ],
+    "lint": [],
+    "typecheck": [],
+    "test": [],
+    "build": [
+      "pnpm run build"
+    ],
+    "security": [
+      "pwsh ../security/Invoke-RepoSecurityScan.ps1 -Path ."
+    ]
+  },
+  "documents": {
+    "agents": "AGENTS.md",
+    "system": "SYSTEM.md",
+    "schema": "SCHEMA.md",
+    "skills": "SKILLS.md",
+    "product": null,
+    "gtm": null,
+    "runbook": "RUNBOOK.md",
+    "testing": "TESTING.md",
+    "security": "SECURITY.md",
+    "design": null
+  },
+  "runtime": {
+    "package_managers": [
+      "pnpm"
+    ],
+    "services": [],
+    "dependencies": []
+  },
+  "data": {
+    "classification": "internal",
+    "persistent_store": [],
+    "auth_owner": "suno-mcp-server",
+    "pii_allowed": false,
+    "retention_policy_ref": "SECURITY.md"
+  },
+  "delivery": {
+    "providers": [
+      "github"
+    ],
+    "projects": [],
+    "domains": [],
+    "promotion_policy": "named-human-approval",
+    "rollback": "Revert the bounded change or promote the last verified deployment after confirming data compatibility."
+  },
+  "agentic": {
+    "team_profile_ref": "music-media-release-team",
+    "skills": [
+      "agentic-music-os",
+      "suno-release",
+      "motion-media-producer",
+      "visual-intelligence"
+    ],
+    "plugins": [
+      "music-media-release"
+    ],
+    "tools": [
+      "github",
+      "vercel",
+      "visual-intelligence",
+      "remotion"
+    ],
+    "write_scopes": [
+      "assigned-task-paths-only"
+    ],
+    "handoff": "Report artifacts, checks, verifier verdict, remaining risks, approval needs, and next bounded action."
+  },
+  "gates": {
+    "local": [
+      "lint",
+      "typecheck",
+      "test",
+      "build"
+    ],
+    "ci": [
+      "concurrency-cancel-in-progress",
+      "timeout",
+      "paths-filter",
+      "draft-heavy-gate"
+    ],
+    "security": [
+      "security-intake",
+      "secret-scan",
+      "data-boundary"
+    ],
+    "design": [],
+    "ai": [],
+    "release": [
+      "independent-verifier",
+      "named-human-approval",
+      "production_high_risk",
+      "dns_change",
+      "secret_change",
+      "billing_change",
+      "spend",
+      "data_migration",
+      "destructive",
+      "external_send",
+      "legal_ip",
+      "brand_identity",
+      "permission_change"
+    ],
+    "evidence": [
+      "run-receipt",
+      "operation-receipt",
+      "rollback-proof"
+    ]
+  },
+  "extensions": {
+    "purpose": "Suno MCP server and governed music-operations integration.",
+    "product_role": "Music tool adapter",
+    "primary_outcome": "Reliable provenance-backed music operations",
+    "legacy_v1": {
+      "name": "suno-mcp-server",
+      "classification": "agent-substrate",
+      "owner": "FrankX AI",
+      "updated": "2026-06-19",
+      "remote": "https://github.com/frankxai/suno-mcp-server.git",
+      "health": {
+        "primaryCheck": "npm run build",
+        "manualChecks": [
+          "Review AGENTS.md before edits",
+          "Preserve user work and dirty files",
+          "Scan public outputs for secrets and private memory"
+        ]
+      },
+      "agentGuidance": {
+        "readAgentsMd": true,
+        "avoidPrivateMemory": true,
+        "preserveExistingConventions": true,
+        "designTasteKernel": {
+          "enabled": true,
+          "root": "C:\\Users\\frank\\starlight\\repos",
+          "files": [
+            "C:\\Users\\frank\\starlight\\repos\\DESIGN_TASTE.md",
+            "C:\\Users\\frank\\starlight\\repos\\WEB_EXPERIENCE_STANDARD.md",
+            "C:\\Users\\frank\\starlight\\repos\\MOTION_TASTE_RUBRIC.md",
+            "C:\\Users\\frank\\starlight\\repos\\MULTI_AGENT_DESIGN_COUNCIL.md",
+            "C:\\Users\\frank\\starlight\\repos\\VISUAL_QA_GATE.md"
+          ],
+          "appliesTo": [
+            "site",
+            "app",
+            "landing-page",
+            "dashboard",
+            "visual-identity",
+            "brand",
+            "motion",
+            "media",
+            "social",
+            "frontend"
+          ],
+          "motionPlugin": "motion-design-studio",
+          "visualVerificationRequired": true
+        }
+      }
+    }
+  }
 }
