@@ -1,4 +1,3 @@
-
 # Starlight/ACOS temporary files
 .agent/
 *.log
@@ -7,7 +6,16 @@
 temp-*.json
 link-checker-report.json
 link-checker-report.txt
-
-# Starlight/ACOS temporary files
 .starlight/
 .gemini/
+
+# Build / deps
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+coverage/
+.pnpm-store/
+.env
+.env.*
+!.env.example

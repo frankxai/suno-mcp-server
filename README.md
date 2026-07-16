@@ -1,10 +1,9 @@
 <div align="center">
 
-# Suno MCP Server
+# Suno MCP Server · Music Superpowers
 
-**AI music generation from your coding agent**
-
-*Create, iterate, and manage AI music directly from Claude Code, Cursor, or any MCP client.*
+**Phase 1 live: Prompt Strategy Engine** — map intent → Music DNA → Suno Style  
+*Create, articulate, and prepare AI music from Claude Code, Cursor, Hermes, or any MCP client.*
 
 [![MCP](https://img.shields.io/badge/MCP-server-blue?style=for-the-badge)](https://modelcontextprotocol.io)
 [![Suno](https://img.shields.io/badge/Suno-AI_Music-purple?style=for-the-badge)](https://suno.com)
@@ -16,81 +15,128 @@
 
 ## Why?
 
-AI music generation is powerful but disconnected from development workflows. This MCP server bridges the gap — generate music, manage tracks, and iterate on compositions without leaving your coding agent.
+AI music generation fails when intent is vague. This server’s first job is **articulation**: structured Music DNA, keyword strategy, and Style fields that match high-signal library examples (Neon Horizons, Liminal Tides). Generation routing comes later (Phase 6).
 
 ```
-You: "Create an ambient electronic track for my app's loading screen"
-→ Suno MCP generates track with optimized prompt
-→ Returns audio URL + metadata
-→ You integrate directly into your project
+You: "Neon night drive, nostalgic but driving"
+→ map_music_dna → structured DNA
+→ build_style_field → full Suno Style
+→ compare to library://prompts
+→ (later) generate_suno / route_generation
 ```
 
-## Features
+## Status
 
-- **Generate tracks** with optimized Suno prompts from natural language
-- **Genre expertise** built-in — 50+ genre prompt templates
-- **Iterate** on existing tracks (extend, remix, style transfer)
-- **Manage** your Suno library from the CLI
-- **Batch generate** multiple variations
-- **Commercial licensing** metadata tracking
+| Phase | Name | Status |
+|-------|------|--------|
+| **1** | Prompt Strategy Engine | **Scaffolded (this release)** |
+| 2 | Lyrics | Planned |
+| 3 | Composition & Vibe | Planned |
+| 4 | Album | Planned |
+| 5 | Story & Lore | Planned |
+| 6 | Generation Router | Stub later |
+| 7 | Assets & Analytics | Planned |
+
+See `docs/PHASE1.md` for full tool/resource contracts.
 
 ## Install
 
 ```bash
-npm install -g @frankxai/suno-mcp-server
+# from repo / worktree
+pnpm install
+pnpm run build
+pnpm start   # stdio MCP server
 ```
 
-Or add to your MCP config:
+MCP config (local worktree example):
 
 ```json
 {
-  "suno-mcp": {
+  "music-mcp": {
+    "command": "node",
+    "args": ["C:/Users/frank/starlight/repos/.hermes-worktrees/suno-mcp-phase1/dist/index.js"]
+  }
+}
+```
+
+Published package form:
+
+```json
+{
+  "music-mcp": {
     "command": "npx",
     "args": ["@frankxai/suno-mcp-server"],
     "env": {
-      "SUNO_API_KEY": "your-key"
+      "SUNO_API_KEY": "optional-phase-6"
     }
   }
 }
 ```
 
-## MCP Tools
+## Phase 1 MCP Tools
 
 | Tool | Description |
-|------|------------|
-| `suno_generate` | Generate a new track from description |
-| `suno_extend` | Extend an existing track |
-| `suno_remix` | Create variation of existing track |
-| `suno_list` | List your generated tracks |
-| `suno_get` | Get track details and download URL |
-| `suno_prompt_optimize` | Optimize a natural language description into Suno prompt format |
+|------|-------------|
+| `map_music_dna` | Extract structured Music DNA from free text (optional `image_url` as text hint only) |
+| `build_style_field` | Compose full Suno Style from DNA + optional journey overrides |
+| `suggest_keywords` | Keyword suggestions for a vibe / genre / mood |
+| `analyze_intent` | Clarity score vs DNA dimensions + library examples |
+| `match_top_patterns` | Similar pattern cards + library hits |
 
-## Prompt Engineering
+### Example: map → style
 
-The server includes built-in prompt optimization for Suno:
-
-```
-Input:  "relaxing piano music for a meditation app"
-Output: "[Ambient Piano] Gentle flowing arpeggios, soft sustain pedal,
-         warm reverb, 60 BPM, meditation-friendly, no vocals,
-         clean production, stereo width"
+```json
+// map_music_dna
+{
+  "text": "Neon night drive, 80s retro-futuristic synthwave, male baritone with slight rasp, starts sparse with pulsing bass",
+  "bpm_hint": 128
+}
 ```
 
-Genre templates cover:
-- Electronic (ambient, synthwave, techno, house, DnB)
-- Hip-hop (boom bap, trap, lo-fi, conscious)
-- Rock (indie, post-rock, shoegaze, metal)
-- Classical (orchestral, piano solo, chamber)
-- World (afrobeat, latin, celtic, middle eastern)
-- Experimental (glitch, IDM, noise, drone)
+```json
+// build_style_field (dna = previous result)
+{
+  "dna": { "...": "from map_music_dna" },
+  "max_chars": 450
+}
+```
 
-## Part of the ACOS Ecosystem
+**Style formula**:  
+`Genre + Mood + Era + Instruments + Vocal Persona + Production + Dynamics Journey`
 
-This MCP server integrates with the [Agentic Creator OS](https://github.com/frankxai/agentic-creator-os) music-lab plugin for full music production workflows.
+## Resources
 
-## Status
+| URI | Description |
+|-----|-------------|
+| `library://prompts` | Seed prompt library (Neon Horizons, Liminal Tides) |
+| `library://prompts/{id}` | Single library entry |
+| `musicdna://vocab` | Keyword taxonomy |
+| `musicdna://vibe-maps` | Vibe → partial DNA cards |
+| `musicdna://top-patterns` | Producer pattern cards |
 
-Early development. Core MCP interface and prompt optimization engine are being built. Contributions welcome.
+## Prompts
+
+| Prompt | Purpose |
+|--------|---------|
+| `intent_to_dna` | Guided articulation coach |
+| `emotion_image_to_style` | Image description → DNA → Style |
+
+## Development
+
+```bash
+pnpm run typecheck
+pnpm run test:phase1
+pnpm run build
+```
+
+**Constraints**: text-first, stdio only (no HTTP gateway), no bulk media downloads, credentials only via env for later phases.
+
+## Ecosystem
+
+- Music architecture SSOT: Starlight `music-ecosystem/docs/MUSIC_ECOSYSTEM_ARCHITECTURE.md`
+- Phase specs: `music-ecosystem/mcp-specs/MCP_PHASES.md`
+- Seed library source: `music-ecosystem/prompt-library/SEED_PROMPT_LIBRARY.md`
+- Hermes skills: `suno-e2e-workflow`, `songwriting-and-ai-music`
 
 ## License
 

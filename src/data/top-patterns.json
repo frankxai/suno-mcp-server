@@ -1,0 +1,46 @@
+{
+  "version": "0.1.0",
+  "description": "Top producer / library pattern cards for match_top_patterns",
+  "patterns": [
+    {
+      "id": "pattern-dynamic-arc",
+      "name": "Dynamic Arc Formula",
+      "summary": "Begins sparse → layers → full chorus → bridge intimate → resolve",
+      "template": "Begins as [sparse/intimate]. Gradually layers [X]. Builds through chorus with [full power]. Second verse erupts with [intensity]. Outro strips back to [vulnerability].",
+      "tags": ["dynamics", "arrangement", "journey"],
+      "linked_entries": ["neon-horizons-001", "liminal-tides-001"]
+    },
+    {
+      "id": "pattern-style-field",
+      "name": "Style Field Formula",
+      "summary": "Genre + Mood + Era + Instruments + Vocal Persona + Production + Dynamics Journey",
+      "template": "Genre + Mood + Era + Instruments + Vocal Persona + Production + Dynamics Journey",
+      "tags": ["style", "suno", "prompt"],
+      "linked_entries": ["neon-horizons-001", "liminal-tides-001"]
+    },
+    {
+      "id": "pattern-genre-mashup",
+      "name": "Genre Mashup Clarity",
+      "summary": "Name both genres, assign roles (texture vs rhythm), spell dynamics",
+      "template": "[Genre A] x [Genre B], [BPM], [rhythm from B], [texture from A], [vocal], [emotional dualism], [journey quote]",
+      "tags": ["hybrid", "genre", "liminal"],
+      "linked_entries": ["liminal-tides-001"]
+    },
+    {
+      "id": "pattern-vocal-persona",
+      "name": "Vocal Persona Contrast",
+      "summary": "Specific voice character + optional harmony contrast",
+      "template": "[primary vocal character], [optional harmony contrast], [performance tags]",
+      "tags": ["vocal", "persona"],
+      "linked_entries": ["neon-horizons-001", "liminal-tides-001"]
+    },
+    {
+      "id": "pattern-metatag-discipline",
+      "name": "Metatag Discipline",
+      "summary": "Structure + performance + dynamics tags; max 5–8 per section; no contradictions",
+      "template": "[Intro] [Verse] [Pre-Chorus] [Chorus] [Bridge] [Drop] [Outro] + [Whispered]/[Belted]/[High Energy]",
+      "tags": ["lyrics", "metatags"],
+      "linked_entries": []
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "version": "0.1.0",
+  "description": "Common vibe phrases → partial Music DNA cards",
+  "maps": [
+    {
+      "vibe": "neon night drive",
+      "aliases": ["cyberpunk night", "outrun highway", "city after dark"],
+      "dna_partial": {
+        "core_emotion": ["nostalgic", "energetic"],
+        "genre": "Cinematic synthwave",
+        "mood": ["futuristic", "driving", "nostalgic"],
+        "vibe_dna": ["neon city", "night drive", "electric soul"],
+        "textures": ["driving arpeggios", "lush pads", "pulsing bass"],
+        "era": "80s retro-futuristic",
+        "bpm": 120,
+        "key": "A minor"
+      }
+    },
+    {
+      "vibe": "ocean liminal",
+      "aliases": ["beach house dnb", "salt air melancholy", "shore and signal"],
+      "dna_partial": {
+        "core_emotion": ["melancholic", "liminal"],
+        "genre": "Atmospheric liquid DnB",
+        "mood": ["wistful", "driving", "atmospheric"],
+        "vibe_dna": ["salt air", "liminal edge", "dual worlds"],
+        "textures": ["rolling breaks", "heavy sub bass", "reverb electric guitars"],
+        "era": "modern streaming polish",
+        "bpm": 174,
+        "key": "A minor"
+      }
+    },
+    {
+      "vibe": "meditation calm",
+      "aliases": ["soft piano focus", "breath work ambient", "spa ambient"],
+      "dna_partial": {
+        "core_emotion": ["serene", "intimate"],
+        "genre": "Ambient piano",
+        "mood": ["calm", "hopeful", "serene"],
+        "vibe_dna": ["breath", "still water", "soft light"],
+        "textures": ["warm piano", "lush pads"],
+        "era": "timeless ambient",
+        "bpm": 60,
+        "key": "C major"
+      }
+    },
+    {
+      "vibe": "club peak energy",
+      "aliases": ["festival mainstage", "warehouse techno", "euphoric drop"],
+      "dna_partial": {
+        "core_emotion": ["euphoric", "energetic"],
+        "genre": "Peak-time techno / progressive house",
+        "mood": ["triumphant", "driving", "aggressive"],
+        "vibe_dna": ["mainstage", "laser grid", "body in motion"],
+        "textures": ["sidechain pump", "heavy sub bass", "bright leads"],
+        "era": "modern streaming polish",
+        "bpm": 128
+      }
+    },
+    {
+      "vibe": "lofi study",
+      "aliases": ["late night homework", "rainy window beats"],
+      "dna_partial": {
+        "core_emotion": ["intimate", "nostalgic"],
+        "genre": "Lo-fi hip-hop",
+        "mood": ["dreamy", "bittersweet", "calm"],
+        "vibe_dna": ["rain window", "desk lamp", "soft focus"],
+        "textures": ["vinyl crackle", "warm piano", "tape hiss"],
+        "era": "2000s indie",
+        "bpm": 85
+      }
+    }
+  ]
+}

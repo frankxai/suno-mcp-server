@@ -1,0 +1,67 @@
+{
+  "version": "0.1.0",
+  "updated": "2026-07-17",
+  "entries": [
+    {
+      "id": "neon-horizons-001",
+      "title": "Neon Horizons",
+      "artist": "Frank Riemer / GenCreator",
+      "genre": "Synthwave / Electronic · Cinematic Synthwave",
+      "bpm": 128,
+      "key": "A minor",
+      "mood": ["energetic", "nostalgic", "uplifting", "futuristic"],
+      "vibe_dna": [
+        "digital nomad",
+        "neon city",
+        "network sea",
+        "electric soul",
+        "80s revival",
+        "code as freedom"
+      ],
+      "style_field": "Cinematic synthwave, 80s retro-futuristic, driving arpeggios, lush pads, male baritone with slight rasp, energetic yet nostalgic, starts sparse with pulsing bass, layers in bright leads and soaring synths in chorus, drops to intimate vocal in bridge, high production polish, 128 BPM, A minor",
+      "lyrics_excerpt": "[Intro]\nPulsing through the wires...\n\n[Verse 1]\nCity lights blur in the rearview glow\nChasing signals only we know\nFrom the desk to the endless road\nWe carry futures in our code\n\n[Chorus]\nNeon horizons calling out our name\nDigital freedom, breaking every frame\nWe build the world that we dreamed in the rain\nNeon horizons — this is our domain",
+      "success_signals": [
+        "Structured emotional arc",
+        "Strong hook",
+        "Clear dynamic journey in style",
+        "Brand-aligned (GenCreator)",
+        "Ready for DistroKid packaging"
+      ],
+      "why_it_worked": "Explicit journey description in Style + full metatagged structure + persona (baritone rasp) + contrast (sparse → soaring → intimate).",
+      "tags": ["synthwave", "gencreator", "digital-nomad", "cinematic", "e2e-example"],
+      "rating": null,
+      "variants": [],
+      "linked_release": "releases/2026-06-26-neon-horizons"
+    },
+    {
+      "id": "liminal-tides-001",
+      "title": "Liminal Tides",
+      "artist": "Frank Riemer / GenCreator",
+      "genre": "Beach House x Drum & Bass · Atmospheric Liquid DnB",
+      "bpm": 174,
+      "key": "A minor",
+      "mood": ["melancholic", "driving", "atmospheric", "liminal", "wistful"],
+      "vibe_dna": [
+        "liminal edge",
+        "ocean + server",
+        "salt air",
+        "liquid breaks",
+        "reverb guitar",
+        "dual worlds"
+      ],
+      "style_field": "Beach House x Drum & Bass, 174 BPM, deep rolling breaks, heavy sub bass, dreamy reverb electric guitars, lush atmospheric pads, salt air melancholy, ethereal female vocals with light male harmonies, driving yet wistful, wave-like dynamics, 'gentle ocean intro with distant breaks, builds into powerful liquid DnB drops with soaring pads, emotional vocal peaks, strips back to intimate guitar and voice in bridge'",
+      "lyrics_excerpt": "[Intro]\nWaves crash on the edge of code...\n\n[Verse 1]\nSalt on my skin, static in my veins\nStanding where the real and digital meet\nThe tide pulls one way, the signal the other\nI feel both worlds breathing under my feet\n\n[Chorus]\nLiminal tides, pulling me under\nBetween the shore and the thunder\nI build in the space where the worlds collide\nLiminal tides — this is where I come alive",
+      "success_signals": [
+        "Genre mashup with clear dynamics",
+        "Strong metaphor",
+        "Production notes for Drop/Bridge",
+        "Flagship quality"
+      ],
+      "why_it_worked": "Hyper-specific Style journey + hybrid genre + emotional dualism (ocean/server) + vocal persona contrast.",
+      "tags": ["dnb", "beach-house", "liminal", "liquid", "atmospheric", "e2e-example"],
+      "rating": null,
+      "variants": [],
+      "linked_release": "releases/2026-06-26-liminal-tides"
+    }
+  ]
+}
