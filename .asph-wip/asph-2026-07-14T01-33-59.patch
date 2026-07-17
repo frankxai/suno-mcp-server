@@ -1,0 +1,538 @@
+diff --git a/.agent-harness.json b/.agent-harness.json
+index 59bf051..d5af422 100644
+--- a/.agent-harness.json
++++ b/.agent-harness.json
+@@ -1,45 +1,185 @@
+-﻿{
+-    "name":  "suno-mcp-server",
+-    "classification":  "agent-substrate",
+-    "owner":  "FrankX AI",
+-    "updated":  "2026-06-19",
+-    "remote":  "https://github.com/frankxai/suno-mcp-server.git",
+-    "health":  {
+-                   "primaryCheck":  "npm run build",
+-                   "manualChecks":  [
+-                                        "Review AGENTS.md before edits",
+-                                        "Preserve user work and dirty files",
+-                                        "Scan public outputs for secrets and private memory"
+-                                    ]
+-               },
+-    "agentGuidance":  {
+-                          "readAgentsMd":  true,
+-                          "avoidPrivateMemory":  true,
+-                          "preserveExistingConventions":  true,
+-                          "designTasteKernel":  {
+-                                                    "enabled":  true,
+-                                                    "root":  "C:\\Users\\frank\\starlight\\repos",
+-                                                    "files":  [
+-                                                                  "C:\\Users\\frank\\starlight\\repos\\DESIGN_TASTE.md",
+-                                                                  "C:\\Users\\frank\\starlight\\repos\\WEB_EXPERIENCE_STANDARD.md",
+-                                                                  "C:\\Users\\frank\\starlight\\repos\\MOTION_TASTE_RUBRIC.md",
+-                                                                  "C:\\Users\\frank\\starlight\\repos\\MULTI_AGENT_DESIGN_COUNCIL.md",
+-                                                                  "C:\\Users\\frank\\starlight\\repos\\VISUAL_QA_GATE.md"
+-                                                              ],
+-                                                    "appliesTo":  [
+-                                                                      "site",
+-                                                                      "app",
+-                                                                      "landing-page",
+-                                                                      "dashboard",
+-                                                                      "visual-identity",
+-                                                                      "brand",
+-                                                                      "motion",
+-                                                                      "media",
+-                                                                      "social",
+-                                                                      "frontend"
+-                                                                  ],
+-                                                    "motionPlugin":  "motion-design-studio",
+-                                                    "visualVerificationRequired":  true
+-                                                }
+-                      }
++{
++  "schema_version": "starlight.repo_profile.v2",
++  "repo": {
++    "id": "suno-mcp-server",
++    "classification": "tooling",
++    "operating_unit": "music-media",
++    "lane": "arcanea",
++    "lifecycle": "active",
++    "priority": "now",
++    "canonical_source": {
++      "kind": "local-git",
++      "ref": "suno-mcp-server",
++      "nested_root": null
++    },
++    "default_branch": "main",
++    "visibility": "unknown"
++  },
++  "ownership": {
++    "human_owner": "Frank",
++    "steward_team": "music-media-release-team",
++    "support_lane": "music-is-ops"
++  },
++  "commands": {
++    "health": [
++      "pnpm run build"
++    ],
++    "lint": [],
++    "typecheck": [],
++    "test": [],
++    "build": [
++      "pnpm run build"
++    ],
++    "security": [
++      "pwsh ../security/Invoke-RepoSecurityScan.ps1 -Path ."
++    ]
++  },
++  "documents": {
++    "agents": "AGENTS.md",
++    "system": "SYSTEM.md",
++    "schema": "SCHEMA.md",
++    "skills": "SKILLS.md",
++    "product": null,
++    "gtm": null,
++    "runbook": "RUNBOOK.md",
++    "testing": "TESTING.md",
++    "security": "SECURITY.md",
++    "design": null
++  },
++  "runtime": {
++    "package_managers": [
++      "pnpm"
++    ],
++    "services": [],
++    "dependencies": []
++  },
++  "data": {
++    "classification": "internal",
++    "persistent_store": [],
++    "auth_owner": "suno-mcp-server",
++    "pii_allowed": false,
++    "retention_policy_ref": "SECURITY.md"
++  },
++  "delivery": {
++    "providers": [
++      "github"
++    ],
++    "projects": [],
++    "domains": [],
++    "promotion_policy": "named-human-approval",
++    "rollback": "Revert the bounded change or promote the last verified deployment after confirming data compatibility."
++  },
++  "agentic": {
++    "team_profile_ref": "music-media-release-team",
++    "skills": [
++      "agentic-music-os",
++      "suno-release",
++      "motion-media-producer",
++      "visual-intelligence"
++    ],
++    "plugins": [
++      "music-media-release"
++    ],
++    "tools": [
++      "github",
++      "vercel",
++      "visual-intelligence",
++      "remotion"
++    ],
++    "write_scopes": [
++      "assigned-task-paths-only"
++    ],
++    "handoff": "Report artifacts, checks, verifier verdict, remaining risks, approval needs, and next bounded action."
++  },
++  "gates": {
++    "local": [
++      "lint",
++      "typecheck",
++      "test",
++      "build"
++    ],
++    "ci": [
++      "concurrency-cancel-in-progress",
++      "timeout",
++      "paths-filter",
++      "draft-heavy-gate"
++    ],
++    "security": [
++      "security-intake",
++      "secret-scan",
++      "data-boundary"
++    ],
++    "design": [],
++    "ai": [],
++    "release": [
++      "independent-verifier",
++      "named-human-approval",
++      "production_high_risk",
++      "dns_change",
++      "secret_change",
++      "billing_change",
++      "spend",
++      "data_migration",
++      "destructive",
++      "external_send",
++      "legal_ip",
++      "brand_identity",
++      "permission_change"
++    ],
++    "evidence": [
++      "run-receipt",
++      "operation-receipt",
++      "rollback-proof"
++    ]
++  },
++  "extensions": {
++    "purpose": "Suno MCP server and governed music-operations integration.",
++    "product_role": "Music tool adapter",
++    "primary_outcome": "Reliable provenance-backed music operations",
++    "legacy_v1": {
++      "name": "suno-mcp-server",
++      "classification": "agent-substrate",
++      "owner": "FrankX AI",
++      "updated": "2026-06-19",
++      "remote": "https://github.com/frankxai/suno-mcp-server.git",
++      "health": {
++        "primaryCheck": "npm run build",
++        "manualChecks": [
++          "Review AGENTS.md before edits",
++          "Preserve user work and dirty files",
++          "Scan public outputs for secrets and private memory"
++        ]
++      },
++      "agentGuidance": {
++        "readAgentsMd": true,
++        "avoidPrivateMemory": true,
++        "preserveExistingConventions": true,
++        "designTasteKernel": {
++          "enabled": true,
++          "root": "C:\\Users\\frank\\starlight\\repos",
++          "files": [
++            "C:\\Users\\frank\\starlight\\repos\\DESIGN_TASTE.md",
++            "C:\\Users\\frank\\starlight\\repos\\WEB_EXPERIENCE_STANDARD.md",
++            "C:\\Users\\frank\\starlight\\repos\\MOTION_TASTE_RUBRIC.md",
++            "C:\\Users\\frank\\starlight\\repos\\MULTI_AGENT_DESIGN_COUNCIL.md",
++            "C:\\Users\\frank\\starlight\\repos\\VISUAL_QA_GATE.md"
++          ],
++          "appliesTo": [
++            "site",
++            "app",
++            "landing-page",
++            "dashboard",
++            "visual-identity",
++            "brand",
++            "motion",
++            "media",
++            "social",
++            "frontend"
++          ],
++          "motionPlugin": "motion-design-studio",
++          "visualVerificationRequired": true
++        }
++      }
++    }
++  }
+ }
+diff --git a/.asph-wip/asph-2026-07-07T23-44-32.patch b/.asph-wip/asph-2026-07-07T23-44-32.patch
+new file mode 100644
+index 0000000..03456e9
+--- /dev/null
++++ b/.asph-wip/asph-2026-07-07T23-44-32.patch
+@@ -0,0 +1,122 @@
++diff --git a/.agent-harness.json b/.agent-harness.json
++new file mode 100644
++index 0000000..59bf051
++--- /dev/null
+++++ b/.agent-harness.json
++@@ -0,0 +1,45 @@
+++﻿{
+++    "name":  "suno-mcp-server",
+++    "classification":  "agent-substrate",
+++    "owner":  "FrankX AI",
+++    "updated":  "2026-06-19",
+++    "remote":  "https://github.com/frankxai/suno-mcp-server.git",
+++    "health":  {
+++                   "primaryCheck":  "npm run build",
+++                   "manualChecks":  [
+++                                        "Review AGENTS.md before edits",
+++                                        "Preserve user work and dirty files",
+++                                        "Scan public outputs for secrets and private memory"
+++                                    ]
+++               },
+++    "agentGuidance":  {
+++                          "readAgentsMd":  true,
+++                          "avoidPrivateMemory":  true,
+++                          "preserveExistingConventions":  true,
+++                          "designTasteKernel":  {
+++                                                    "enabled":  true,
+++                                                    "root":  "C:\\Users\\frank\\starlight\\repos",
+++                                                    "files":  [
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\DESIGN_TASTE.md",
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\WEB_EXPERIENCE_STANDARD.md",
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\MOTION_TASTE_RUBRIC.md",
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\MULTI_AGENT_DESIGN_COUNCIL.md",
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\VISUAL_QA_GATE.md"
+++                                                              ],
+++                                                    "appliesTo":  [
+++                                                                      "site",
+++                                                                      "app",
+++                                                                      "landing-page",
+++                                                                      "dashboard",
+++                                                                      "visual-identity",
+++                                                                      "brand",
+++                                                                      "motion",
+++                                                                      "media",
+++                                                                      "social",
+++                                                                      "frontend"
+++                                                                  ],
+++                                                    "motionPlugin":  "motion-design-studio",
+++                                                    "visualVerificationRequired":  true
+++                                                }
+++                      }
+++}
++diff --git a/AGENTS.md b/AGENTS.md
++new file mode 100644
++index 0000000..4166820
++--- /dev/null
+++++ b/AGENTS.md
++@@ -0,0 +1,65 @@
+++# Repository Instructions
+++
+++This repo is part of the FrankX / Starlight / Arcanea agent estate.
+++
+++## Classification
+++
+++- Repo: $title
+++- Class: $Classification
+++- Default health command: $HealthCommand
+++- Remote: $Remote
+++
+++## Agent Rules
+++
+++- Read this file before making changes.
+++- Preserve existing user work and unrelated dirty files.
+++- Keep edits scoped to the requested task.
+++- Prefer existing repo conventions over new abstractions.
+++- Run the health command before handoff when feasible.
+++- Do not publish secrets, private memory, credentials, or internal-only strategy.
+++
+++## Class-Specific Guidance
+++
+++- Preserve skill/plugin/MCP schemas and frontmatter.
+++- Validate skills, manifests, scripts, and generated registries after edits.
+++- Keep public/private memory boundaries explicit.
+++
+++## Handoff
+++
+++Summarize changed files, validation run, risks, and any follow-up needed.
+++
+++## Design Taste Kernel
+++
+++For any site, app, landing page, dashboard, visual identity, brand, motion, media, social, or frontend task, apply the shared Design Taste Kernel before handoff:
+++
+++- C:\Users\frank\starlight\repos\DESIGN_TASTE.md
+++- C:\Users\frank\starlight\repos\WEB_EXPERIENCE_STANDARD.md
+++- C:\Users\frank\starlight\repos\MOTION_TASTE_RUBRIC.md
+++- C:\Users\frank\starlight\repos\MULTI_AGENT_DESIGN_COUNCIL.md
+++- C:\Users\frank\starlight\repos\VISUAL_QA_GATE.md
+++
+++When motion, scroll, generated media, GIF/video, or premium polish matters, route through the Motion Design Studio plugin/skills and verify the result visually.
+++
+++
+++<!-- PREMIUM-WEB-OS:START -->
+++## Premium Intelligence Web OS Adoption
+++
+++This repo participates in the Starlight Premium Intelligence Web OS.
+++
+++For any website, app, landing page, dashboard, brand surface, visual asset, motion system, 3D/WebGL scene, generated media, or public-facing UI work:
+++
+++- Read the estate OS first: `C:\Users\frank\starlight\repos\_intelligence\README.md`.
+++- Use the activation contract: `C:\Users\frank\starlight\repos\_intelligence\adoption\activation-contract.md`.
+++- Treat `C:\Users\frank\starlight\repos\_intelligence\` as the source of truth for premium web taste, design, motion, WebGL, copy, assets, and quality gates.
+++- Use `/pwo` or the `premium-web-os` skill for full builds; use `/mad` for a design council pass.
+++- Use `/pwo review-pr` before absorbing another agent's PR or branch.
+++- Use `/pwo absorb-assets` before using external, generated, scientific, audio, video, or 3D assets.
+++- Use `/pwo motion-score` before shipping cinematic scroll, sound-paired motion, or complex choreography.
+++- Build static composition first, add Track A local motion second, add Track B GSAP/Lenis scroll only when earned, and add 3D only with fallback and reduced-motion behavior.
+++- Use VIS through `C:\Users\frank\starlight\repos\visual-intelligence` for asset provenance, curation packets, rights, and publication records.
+++- Use `C:\Users\frank\starlight\repos\_intelligence\visual-worlds\neural-cosmos.md` for neuroscience, cerebrum, spine, electron, signal, or golden spiral direction.
+++- Do not copy reference sites or agencies. Deconstruct principles and create original execution.
+++- Do not ship without responsive, accessibility, performance, reduced-motion, and visual QA checks appropriate to the change.
+++
+++Repo-local instructions remain authoritative when stricter.
+++<!-- PREMIUM-WEB-OS:END -->
+diff --git a/AGENTS.md b/AGENTS.md
+index 4166820..129d64d 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -63,3 +63,14 @@ For any website, app, landing page, dashboard, brand surface, visual asset, moti
+ 
+ Repo-local instructions remain authoritative when stricter.
+ <!-- PREMIUM-WEB-OS:END -->
++
++<!-- STARLIGHT-REPO-CONTRACT:START -->
++## Starlight repository contract
++
++Contract: `starlight.repo_profile.v2` · Team: `music-media-release-team` · Priority: `now`
++- Work only in assigned paths and preserve unrelated dirty files.
++- Read `SYSTEM.md`, `SCHEMA.md`, and `SKILLS.md` before architectural changes.
++- Use the smallest 3–5 role team and an independent verifier for release-affecting work.
++- Required handoff: artifacts, checks, verifier verdict, risks, approvals, rollback, and next bounded action.
++- Human-gated actions: DNS, secrets, billing, spend, migrations, destructive operations, permissions, legal/IP, brand identity, external sends, and high-risk production changes.
++<!-- STARLIGHT-REPO-CONTRACT:END -->
+diff --git a/RUNBOOK.md b/RUNBOOK.md
+new file mode 100644
+index 0000000..7a161ba
+--- /dev/null
++++ b/RUNBOOK.md
+@@ -0,0 +1,19 @@
++# suno-mcp-server — Runbook
++
++<!-- STARLIGHT-REPO-CONTRACT:START -->
++## Starlight repository contract
++
++Contract: `starlight.repo_profile.v2` · Team: `music-media-release-team` · Priority: `now`
++### Fast gates
++
++- health: `pnpm run build`
++- lint: not applicable
++- typecheck: not applicable
++- test: not applicable
++- build: `pnpm run build`
++- security: `pwsh ../security/Invoke-RepoSecurityScan.ps1 -Path .`
++
++### Release
++
++Classify risk, run applicable gates locally, use one coherent preview when deployed, obtain an independent verifier verdict, record evidence, and confirm rollback before promotion. Only predesignated low-risk web changes may use green automatic promotion.
++<!-- STARLIGHT-REPO-CONTRACT:END -->
+diff --git a/SCHEMA.md b/SCHEMA.md
+new file mode 100644
+index 0000000..69b9928
+--- /dev/null
++++ b/SCHEMA.md
+@@ -0,0 +1,21 @@
++# suno-mcp-server — Schema
++
++<!-- STARLIGHT-REPO-CONTRACT:START -->
++## Starlight repository contract
++
++Contract: `starlight.repo_profile.v2` · Team: `music-media-release-team` · Priority: `now`
++### Contract index
++
++- Repository profile: `starlight.repo_profile.v2`
++- Team profile: `starlight.team_profile.v2`
++- Product events: `starlight.product_event.v1` when this repo emits funnel events
++- Entitlements: `starlight.entitlement.v1` when this repo grants product access
++- Operation receipts: `starlight.operation_receipt.v1` for delivery, verification, and releases
++- Run receipts: `starlight.run_receipt.v1` for bounded agent work
++
++### Runtime data stores
++
++- No persistent application store is declared.
++
++Product-owned schemas and migrations remain in this repository. Cross-estate contracts are adapters, not a shared database. PII is prohibited in product analytics events.
++<!-- STARLIGHT-REPO-CONTRACT:END -->
+diff --git a/SECURITY.md b/SECURITY.md
+new file mode 100644
+index 0000000..74e500e
+--- /dev/null
++++ b/SECURITY.md
+@@ -0,0 +1,14 @@
++# suno-mcp-server — Security
++
++<!-- STARLIGHT-REPO-CONTRACT:START -->
++## Starlight repository contract
++
++Contract: `starlight.repo_profile.v2` · Team: `music-media-release-team` · Priority: `now`
++### Data boundary
++
++- Classification: `internal`
++- PII allowed in product-owned storage: `false`
++- Auth owner: `suno-mcp-server`
++
++Never read or print `.env` values. Keep secrets in approved secret stores, keep PII out of analytics events and receipts, scan untrusted code before execution, and stop on credential or private-memory exposure.
++<!-- STARLIGHT-REPO-CONTRACT:END -->
+diff --git a/SKILLS.md b/SKILLS.md
+new file mode 100644
+index 0000000..a9efe7e
+--- /dev/null
++++ b/SKILLS.md
+@@ -0,0 +1,24 @@
++# suno-mcp-server — Skills
++
++<!-- STARLIGHT-REPO-CONTRACT:START -->
++## Starlight repository contract
++
++Contract: `starlight.repo_profile.v2` · Team: `music-media-release-team` · Priority: `now`
++### Required routing
++
++- Team profile: `music-media-release-team`
++- Skills:
++- `agentic-music-os`
++- `suno-release`
++- `motion-media-producer`
++- `visual-intelligence`
++- Plugins:
++- `music-media-release`
++- Tools:
++- `github`
++- `vercel`
++- `visual-intelligence`
++- `remotion`
++
++Actual skills live under `skills/<name>/SKILL.md`. This file is an inventory; do not create a root `skill.md`.
++<!-- STARLIGHT-REPO-CONTRACT:END -->
+diff --git a/SYSTEM.md b/SYSTEM.md
+new file mode 100644
+index 0000000..18afd73
+--- /dev/null
++++ b/SYSTEM.md
+@@ -0,0 +1,26 @@
++# suno-mcp-server — System
++
++<!-- STARLIGHT-REPO-CONTRACT:START -->
++## Starlight repository contract
++
++Contract: `starlight.repo_profile.v2` · Team: `music-media-release-team` · Priority: `now`
++### Purpose
++
++Suno MCP server and governed music-operations integration.
++
++### Runtime boundary
++
++- Operating unit: `music-media`
++- Classification: `tooling`
++- Services: none detected
++- Persistent stores: none
++- Auth owner: `suno-mcp-server`
++
++### Delivery
++
++- Providers: `github`
++- Projects: none
++- Domains: none
++- Promotion: `named-human-approval`
++- Rollback: Revert the bounded change or promote the last verified deployment after confirming data compatibility.
++<!-- STARLIGHT-REPO-CONTRACT:END -->
+diff --git a/TESTING.md b/TESTING.md
+new file mode 100644
+index 0000000..b02c740
+--- /dev/null
++++ b/TESTING.md
+@@ -0,0 +1,17 @@
++# suno-mcp-server — Testing
++
++<!-- STARLIGHT-REPO-CONTRACT:START -->
++## Starlight repository contract
++
++Contract: `starlight.repo_profile.v2` · Team: `music-media-release-team` · Priority: `now`
++### Commands
++
++- health: `pnpm run build`
++- lint: not applicable
++- typecheck: not applicable
++- test: not applicable
++- build: `pnpm run build`
++- security: `pwsh ../security/Invoke-RepoSecurityScan.ps1 -Path .`
++
++Tests must cover failure paths, idempotency where state changes, adapter compatibility, and rollback-sensitive behavior. Skipped checks require a reason and may not be reported as passed.
++<!-- STARLIGHT-REPO-CONTRACT:END -->

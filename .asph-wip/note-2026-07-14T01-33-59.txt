@@ -1,0 +1,6 @@
+ASPH WIP
+Branch: codex/main-preserve-20260630
+Objective: N/A
+Touched: M .agent-harness.json  M AGENTS.md ?? .asph-wip/ ?? RUNBOOK.md ?? SCHEMA.md ?? SECURITY.md ?? SKILLS.md ?? SYSTEM.md ?? TESTING.md
+Resume with: git reset HEAD~1 --mixed
+Full prompt + visual console in agentic-ops/lifecycle/asph-genius-recovery.html
