@@ -2,7 +2,7 @@
 
 # Suno MCP Server · Music Superpowers
 
-**Phase 1 live: Prompt Strategy Engine** — map intent → Music DNA → Suno Style  
+**Phase 1: Prompt Strategy Engine** — map intent → Music DNA → Suno Style
 *Create, articulate, and prepare AI music from Claude Code, Cursor, Hermes, or any MCP client.*
 
 [![MCP](https://img.shields.io/badge/MCP-server-blue?style=for-the-badge)](https://modelcontextprotocol.io)
@@ -43,35 +43,24 @@ See `docs/PHASE1.md` for full tool/resource contracts.
 
 ```bash
 # from repo / worktree
-pnpm install
+pnpm install --frozen-lockfile
 pnpm run build
 pnpm start   # stdio MCP server
 ```
 
-MCP config (local worktree example):
+MCP config (replace the example with your checkout's absolute path):
 
 ```json
 {
   "music-mcp": {
     "command": "node",
-    "args": ["C:/Users/frank/starlight/repos/.hermes-worktrees/suno-mcp-phase1/dist/index.js"]
+    "args": ["/absolute/path/to/suno-mcp-server/dist/index.js"]
   }
 }
 ```
 
-Published package form:
-
-```json
-{
-  "music-mcp": {
-    "command": "npx",
-    "args": ["@frankxai/suno-mcp-server"],
-    "env": {
-      "SUNO_API_KEY": "optional-phase-6"
-    }
-  }
-}
-```
+Use the local build above. This branch does not establish npm publication.
+Phase 1 runs offline and requires no Suno credentials; audio generation remains planned.
 
 ## Phase 1 MCP Tools
 

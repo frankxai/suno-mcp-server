@@ -1,6 +1,7 @@
 {
   "name": "@frankxai/suno-mcp-server",
   "version": "0.2.0",
+  "packageManager": "pnpm@10.28.0",
   "description": "Music Superpowers MCP — Phase 1 Prompt Strategy Engine + Suno generation path stubs",
   "type": "module",
   "main": "dist/index.js",
@@ -41,7 +42,7 @@
     "url": "https://github.com/frankxai/suno-mcp-server.git"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
