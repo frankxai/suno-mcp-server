@@ -1,0 +1,91 @@
+{
+  "version": "0.1.0",
+  "description": "Music DNA keyword taxonomy for map_music_dna / suggest_keywords",
+  "dimensions": {
+    "emotion": [
+      "energetic",
+      "nostalgic",
+      "uplifting",
+      "melancholic",
+      "driving",
+      "atmospheric",
+      "liminal",
+      "wistful",
+      "intimate",
+      "euphoric",
+      "dark",
+      "hopeful",
+      "aggressive",
+      "dreamy",
+      "tense",
+      "serene",
+      "bittersweet",
+      "triumphant"
+    ],
+    "genre_clusters": {
+      "synthwave": ["cinematic synthwave", "outrun", "retrowave", "darksynth"],
+      "electronic": ["ambient", "techno", "house", "IDM", "glitch"],
+      "dnb": ["liquid dnb", "atmospheric dnb", "neurofunk", "jungle"],
+      "hiphop": ["lo-fi", "boom bap", "trap", "conscious"],
+      "rock": ["indie", "shoegaze", "post-rock", "alt-rock"],
+      "pop": ["dream pop", "indie pop", "electropop"],
+      "world": ["afrobeat", "latin", "celtic", "middle eastern"],
+      "classical": ["orchestral", "piano solo", "chamber"]
+    },
+    "textures": [
+      "lush pads",
+      "driving arpeggios",
+      "pulsing bass",
+      "heavy sub bass",
+      "rolling breaks",
+      "reverb electric guitars",
+      "bright leads",
+      "soaring synths",
+      "warm piano",
+      "granular textures",
+      "sidechain pump",
+      "tape hiss",
+      "vinyl crackle",
+      "choir swells",
+      "plucked strings"
+    ],
+    "vocal_personas": [
+      "male baritone with slight rasp",
+      "ethereal female vocals",
+      "light male harmonies",
+      "whispered intimate delivery",
+      "belted chorus power",
+      "falsetto flourishes",
+      "spoken-word edges",
+      "choir-backed ensemble",
+      "instrumental only"
+    ],
+    "production": [
+      "high production polish",
+      "stereo width",
+      "clean production",
+      "lo-fi grit",
+      "club-ready transient punch",
+      "cinematic reverb tails",
+      "intimate dry mix",
+      "wall-of-sound density"
+    ],
+    "era": [
+      "80s retro-futuristic",
+      "90s rave",
+      "2000s indie",
+      "modern streaming polish",
+      "timeless ambient",
+      "future-facing"
+    ],
+    "exclude_common": [
+      "generic EDM drop",
+      "cartoonish chiptune",
+      "harsh metal vocals",
+      "comedy / novelty",
+      "speech-only",
+      "low-bitrate artifacts"
+    ]
+  },
+  "style_formula": "Genre + Mood + Era + Instruments + Vocal Persona + Production + Dynamics Journey"
+}

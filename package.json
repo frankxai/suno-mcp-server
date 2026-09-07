@@ -1,20 +1,56 @@
 {
   "name": "@frankxai/suno-mcp-server",
-  "version": "0.1.0",
-  "description": "MCP server for Suno AI music generation",
+  "version": "0.2.0",
+  "packageManager": "pnpm@10.28.0",
+  "description": "Music Superpowers MCP — Phase 1 Prompt Strategy Engine + Suno generation path stubs",
+  "type": "module",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
-    "suno-mcp-server": "./dist/index.js"
+    "suno-mcp-server": "dist/index.js"
   },
+  "files": [
+    "dist",
+    "src/data",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --import tsx --test tests/phase1.test.ts",
+    "test:phase1": "node --import tsx --test tests/phase1.test.ts"
   },
-  "keywords": ["suno", "mcp", "music", "ai-music", "claude-code", "model-context-protocol"],
+  "keywords": [
+    "suno",
+    "mcp",
+    "music",
+    "music-dna",
+    "prompt-strategy",
+    "ai-music",
+    "claude-code",
+    "model-context-protocol",
+    "starlight",
+    "gencreator"
+  ],
   "author": "FrankX <frank@frankx.ai>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/frankxai/suno-mcp-server.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
   }
 }
