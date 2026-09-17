@@ -10,6 +10,10 @@
     "build": "tsc",
     "start": "node dist/index.js"
   },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  },
   "keywords": ["suno", "mcp", "music", "ai-music", "claude-code", "model-context-protocol"],
   "author": "FrankX <frank@frankx.ai>",
   "license": "MIT",
