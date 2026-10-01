@@ -229,3 +229,9 @@ tests/
 ## License
 
 MIT
+
+## Provider-neutral session preparation (0.3)
+
+`prepare_music_session` validates an approved style/lyric session and compiles Suno supervised, Lyria clip/full, Eleven Music or fal MiniMax Music 3 packets. It preserves lyrics, enforces provider duration/instrumental constraints, bounds candidate count and estimates the render cost. It makes no network request and cannot authorize credits, submit jobs, download audio, listen or publish. Its owner field is a planning label; an executor must authenticate the owner and reserve a host-approved budget.
+
+Craft fundamentals and provider guidance are maintained in the public `frankxai/agentic-music-producer-os` docs. The packet compiler is canonical here in `src/engine/session-compiler.cjs`; an operated factory can vendor this pure compiler with a source revision/hash and parity tests. It contains no private canon or credentials.
