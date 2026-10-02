@@ -1,8 +1,8 @@
 {
   "name": "@frankxai/suno-mcp-server",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "packageManager": "pnpm@10.28.0",
-  "description": "Music Superpowers MCP — Phase 1 Prompt Strategy Engine + Suno generation path stubs",
+  "description": "Music prompt workbench and offline provider packet compiler; no generation backend",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node --import tsx --test tests/phase1.test.ts",
+    "test": "node --import tsx --test tests/*.test.ts",
     "test:phase1": "node --import tsx --test tests/phase1.test.ts"
   },
   "keywords": [

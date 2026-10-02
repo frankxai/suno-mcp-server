@@ -29,8 +29,10 @@ import {
   MusicDnaSchema,
 } from "./schemas/music-dna.js";
 
+import { SessionShape, handlePrepareMusicSession } from "./tools/session.js";
+
 export const SERVER_NAME = "music-mcp";
-export const SERVER_VERSION = "0.2.0";
+export const SERVER_VERSION = "0.3.0";
 
 function jsonContent(data: unknown) {
   return {
@@ -96,6 +98,11 @@ export function createMusicMcpServer(): McpServer {
   const server = new McpServer({
     name: SERVER_NAME,
     version: SERVER_VERSION,
+  });
+
+  server.tool("prepare_music_session", "Prepare a validated provider-neutral music packet; no API calls, credit authorization or audio verdict.", SessionShape, async (args) => {
+    try { return jsonContent(handlePrepareMusicSession(args)); }
+    catch (error) { return errorContent(error); }
   });
 
   // ─── Tools: Phase 1 ───────────────────────────────────────────────
