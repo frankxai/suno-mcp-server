@@ -70,9 +70,48 @@ test("impossible control budget fails explicitly, then recovers with a larger bu
 
 test("an exact control-only budget stays within the limit and reports omissions", () => {
   const vocalDna = MusicDnaSchema.parse({ ...dna, vocal: {
-    gender: "female", character: "a".repeat(80),
+    gender: "unspecified", character: "a".repeat(80),
   } });
   const result = buildStyleField(BuildStyleFieldInputSchema.parse({ dna: vocalDna, max_chars: 80, include_bpm_key: false }));
   assert.equal(result.style_field, "a".repeat(80));
   assert.ok(result.quality_notes.some(note => note.includes("genre/mood")));
+});
+
+test("all eight validated performance notes survive a sufficient budget", () => {
+  const performance_notes = [
+    "no backing choir", "preserve melody", "clear consonants", "no ad libs",
+    "restrained vibrato", "dry verses", "soft chorus", "no spoken intro",
+  ];
+  const vocalDna = MusicDnaSchema.parse({ ...dna, vocal: {
+    gender: "female", character: "close dry alto", performance_notes,
+  } });
+  const result = buildStyleField(BuildStyleFieldInputSchema.parse({ dna: vocalDna, max_chars: 1000 }));
+  for (const note of performance_notes) assert.ok(result.style_field.includes(note), note);
+});
+
+test("explicit gender survives alongside the vocal character", () => {
+  const vocalDna = MusicDnaSchema.parse({ ...dna, vocal: {
+    gender: "female", character: "close dry alto",
+  } });
+  const result = buildStyleField(BuildStyleFieldInputSchema.parse({ dna: vocalDna, max_chars: 80 }));
+  assert.ok(result.style_field.includes("female vocals"));
+  assert.ok(result.style_field.includes("close dry alto"));
+});
+
+test("instrumental performance restrictions survive shortening", () => {
+  const vocalDna = MusicDnaSchema.parse({ ...dna, vocal: {
+    gender: "instrumental", performance_notes: ["no choir", "no chants"],
+  } });
+  const result = buildStyleField(BuildStyleFieldInputSchema.parse({ dna: vocalDna, max_chars: 80 }));
+  assert.ok(result.style_field.includes("instrumental only, no vocals, no choir, no chants"));
+});
+
+test("the budget accounts for every performance restriction before emitting a brief", () => {
+  const vocalDna = MusicDnaSchema.parse({ ...dna, vocal: {
+    gender: "female", character: "alto", performance_notes: [
+      "no backing choir", "preserve melody", "clear consonants", "no ad libs",
+      "restrained vibrato", "dry verses", "soft chorus", "no spoken intro",
+    ],
+  } });
+  assert.throws(() => buildStyleField(BuildStyleFieldInputSchema.parse({ dna: vocalDna, max_chars: 80 })), /increase max_chars/);
 });

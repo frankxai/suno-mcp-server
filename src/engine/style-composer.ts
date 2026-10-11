@@ -18,18 +18,20 @@ function joinList(items: string[], max = 6): string {
 }
 
 function vocalPhrase(dna: MusicDna): string {
-  if (dna.vocal.gender === "instrumental") {
-    return "instrumental only, no vocals";
-  }
   const parts: string[] = [];
-  if (dna.vocal.character) parts.push(dna.vocal.character);
-  else if (dna.vocal.gender !== "unspecified") {
+  if (dna.vocal.gender === "instrumental") {
+    parts.push("instrumental only, no vocals");
+  } else if (dna.vocal.gender !== "unspecified") {
     parts.push(`${dna.vocal.gender} vocals`);
+  }
+  if (dna.vocal.gender !== "instrumental" && dna.vocal.character) {
+    parts.push(dna.vocal.character);
   }
   if (dna.vocal.performance_notes?.length) {
     parts.push(...dna.vocal.performance_notes);
   }
-  return parts.length ? joinList(parts, 4) : "expressive lead vocals";
+  // Keep every validated restriction; the caller rejects an impossible budget.
+  return parts.length ? joinList(parts, parts.length) : "expressive lead vocals";
 }
 
 function moodPhrase(dna: MusicDna): string {
