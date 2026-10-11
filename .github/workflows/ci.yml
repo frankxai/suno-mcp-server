@@ -9,7 +9,7 @@ on:
     paths: ['src/**', 'tests/**', 'scripts/**', 'docs/releases/**', 'package.json', 'package-lock.json', 'pnpm-lock.yaml', 'README.md', 'tsconfig.json', '.github/workflows/ci.yml', '.github/workflows/npm-release.yml']
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.draft && 'draft' || 'ready' }}
   cancel-in-progress: true
 
 permissions:
