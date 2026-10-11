@@ -180,7 +180,7 @@ async function prepare(artifactRoot, out) {
   mkdirSync(out, { recursive: true });
   copyFileSync(selected.path, join(out, 'package.tgz'));
   const result = { repository, package: packageName, version: manifest.version, source: receipt.source,
-    runId: receipt.runId, sha256: selected.sha256, integrity: selected.integrity, artifacts: receipt.artifacts,
+    runId: receipt.runId, releaseRunId: process.env.GITHUB_RUN_ID, sha256: selected.sha256, integrity: selected.integrity, artifacts: receipt.artifacts,
     installedCases: 168, state: 'VERIFIED_ARTIFACT_NOT_PUBLISHED' };
   writeFileSync(join(out, 'release.json'), JSON.stringify(result, null, 2) + '\n');
   console.log(JSON.stringify(result));
@@ -207,6 +207,28 @@ export function validateRegistry(metadata, receipt) {
   assert.equal(url.protocol, 'https:'); assert.equal(url.hostname, 'registry.npmjs.org');
   assert.equal(url.username + url.password, '');
   assert.equal(decodeURIComponent(url.pathname), `/@frankxai/suno-mcp-server/-/suno-mcp-server-${receipt.version}.tgz`);
+}
+
+export function validateAttestationAudit(report, receipt) {
+  assert.deepEqual(report.invalid, []); assert.deepEqual(report.missing, []);
+  const target = report.verified?.find(item => item.name === packageName && item.version === receipt.version);
+  assert.ok(target, 'Native verification must include this package, not only its dependencies');
+  const attestation = target.attestationBundles?.find(item => item.predicateType === 'https://slsa.dev/provenance/v1');
+  assert.ok(attestation?.bundle?.dsseEnvelope?.payload, 'Verified provenance payload is missing');
+  const statement = JSON.parse(Buffer.from(attestation.bundle.dsseEnvelope.payload, 'base64').toString());
+  assert.equal(statement.predicateType, 'https://slsa.dev/provenance/v1');
+  const expectedDigest = Buffer.from(receipt.integrity.slice('sha512-'.length), 'base64').toString('hex');
+  assert.ok(statement.subject?.some(subject => subject.name === `pkg:npm/%40frankxai/suno-mcp-server@${receipt.version}`
+    && subject.digest?.sha512 === expectedDigest), 'Provenance must bind the approved archive');
+  const definition = statement.predicate?.buildDefinition;
+  assert.deepEqual(definition?.externalParameters?.workflow,
+    { ref: 'refs/heads/main', repository: `https://github.com/${repository}`, path: '.github/workflows/npm-release.yml' });
+  assert.ok(definition.resolvedDependencies?.some(item => item.uri === `git+https://github.com/${repository}@refs/heads/main`
+    && item.digest?.gitCommit === receipt.source), 'Verified provenance must bind the reviewed source');
+  assert.match(receipt.releaseRunId ?? '', /^[1-9][0-9]{0,15}$/);
+  const invocation = statement.predicate?.runDetails?.metadata?.invocationId;
+  assert.ok(invocation?.startsWith(`https://github.com/${repository}/actions/runs/${receipt.releaseRunId}/attempts/`));
+  assert.match(invocation.split('/attempts/')[1], /^[1-9][0-9]*$/);
 }
 
 async function publicResponse(url, limit) {
@@ -239,7 +261,7 @@ async function verifyRegistry(out, destination) {
   const env = publicationEnvironment(process.env, root);
   const commands = [
     ['install', [npm, 'install', '--ignore-scripts', '--no-audit', '--no-fund', `${packageName}@${receipt.version}`, '@modelcontextprotocol/sdk@1.32.1', '@modelcontextprotocol/client@2.3.1']],
-    ['signature-audit', [npm, 'audit', 'signatures', '--json']],
+    ['signature-audit', [npm, 'audit', 'signatures', '--json', '--include-attestations']],
     ...modes.map(mode => [mode, [resolve('tests/installed-consumer.mjs'), '--consumer', root, mode]]),
   ];
   const results = [];
@@ -248,6 +270,7 @@ async function verifyRegistry(out, destination) {
     results.push({ name, exitCode: result.status, stdout: result.stdout, stderr: result.stderr, error: result.error?.message });
     writeFileSync(join(destination, 'public-consumer.json'), JSON.stringify({ state: 'INCOMPLETE', source: receipt.source, results }, null, 2) + '\n');
     assert.equal(result.status, 0, `Published-package verification failed: ${name}; inspect the preserved receipt`);
+    if (name === 'signature-audit') validateAttestationAudit(JSON.parse(result.stdout), receipt);
     if (modes.includes(name)) {
       const consumer = JSON.parse(result.stdout);
       assert.equal(consumer.state, 'PASS'); assert.equal(consumer.version, receipt.version);

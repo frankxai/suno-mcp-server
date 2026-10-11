@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import test from 'node:test';
-import { artifactNames, publicationEnvironment, validateEnvironment, validateProof, validateRegistry, validateRun } from '../scripts/release-package.mjs';
+import { artifactNames, publicationEnvironment, validateAttestationAudit, validateEnvironment, validateProof, validateRegistry, validateRun } from '../scripts/release-package.mjs';
 
 const source = 'a'.repeat(40);
 const run = { id: 123, head_repository: { full_name: 'frankxai/suno-mcp-server' }, head_sha: source,
@@ -110,4 +110,25 @@ test('Registry metadata cannot redirect verification to another version, integri
     m => m.dist.tarball = m.dist.tarball.replace('0.4.0.tgz', '0.4.1.tgz')]) {
     const m = structuredClone(metadata); edit(m); assert.throws(() => validateRegistry(m, receipt));
   }
+});
+
+test('Native verified attestations must bind this package, physical digest, source, workflow and release run', () => {
+  const receipt = { version: '0.4.0', integrity: proof().packed.integrity, source, releaseRunId: '456' };
+  const statement = { predicateType: 'https://slsa.dev/provenance/v1', subject: [{ name: 'pkg:npm/%40frankxai/suno-mcp-server@0.4.0',
+    digest: { sha512: createHash('sha512').update(bytes).digest('hex') } }], predicate: {
+    buildDefinition: { externalParameters: { workflow: { ref: 'refs/heads/main', repository: 'https://github.com/frankxai/suno-mcp-server', path: '.github/workflows/npm-release.yml' } },
+      resolvedDependencies: [{ uri: 'git+https://github.com/frankxai/suno-mcp-server@refs/heads/main', digest: { gitCommit: source } }] },
+    runDetails: { metadata: { invocationId: 'https://github.com/frankxai/suno-mcp-server/actions/runs/456/attempts/1' } } } };
+  function report(payload) { return { invalid: [], missing: [], verified: [{ name: '@frankxai/suno-mcp-server', version: '0.4.0',
+    attestationBundles: [{ predicateType: 'https://slsa.dev/provenance/v1', bundle: { dsseEnvelope: { payload: Buffer.from(JSON.stringify(payload)).toString('base64') } } }] }] }; }
+  validateAttestationAudit(report(statement), receipt);
+  for (const edit of [s => s.subject[0].digest.sha512 = 'wrong',
+    s => s.predicate.buildDefinition.resolvedDependencies[0].digest.gitCommit = 'c'.repeat(40),
+    s => s.predicate.buildDefinition.externalParameters.workflow.path = '.github/workflows/other.yml',
+    s => s.predicate.runDetails.metadata.invocationId = 'https://github.com/frankxai/suno-mcp-server/actions/runs/999/attempts/1']) {
+    const s = structuredClone(statement); edit(s); assert.throws(() => validateAttestationAudit(report(s), receipt));
+  }
+  const dependencyOnly = report(statement); dependencyOnly.verified[0].name = '@modelcontextprotocol/server';
+  assert.throws(() => validateAttestationAudit(dependencyOnly, receipt));
+  assert.throws(() => validateAttestationAudit({ invalid: [], missing: [], verified: [] }, receipt));
 });

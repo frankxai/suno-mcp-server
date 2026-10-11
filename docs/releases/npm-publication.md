@@ -22,7 +22,8 @@ It does not submit generation requests or grant tenant, billing or execution aut
    signed provenance and an empty-consumer installation before announcing it.
    Direct publication runs a separate unprivileged `verify-public` job: it downloads
    the public registry archive, compares its hashes, requires provenance/signature
-   metadata, runs native `npm audit signatures`, and exercises three newly installed
+   metadata, runs native `npm audit signatures --include-attestations`, checks the
+   verified target's provenance subject/source/workflow/release-run binding, and exercises three newly installed
    protocol clients. A verification failure keeps the release unaccepted even
    when the version is already publicly available.
 
