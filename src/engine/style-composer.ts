@@ -106,10 +106,29 @@ export function buildStyleField(input: BuildStyleFieldInput): BuildStyleFieldRes
     bpm_key,
   ].filter(Boolean) as string[];
 
-  let style_field = ordered.join(", ");
-  style_field = softTrim(style_field, max_chars);
-
   const quality_notes: string[] = [];
+  let style_field = ordered.join(", ");
+  if (style_field.length > max_chars) {
+    const controls = [vocal, bpm_key].filter(Boolean).join(", ");
+    if (controls.length > max_chars) {
+      throw new Error(
+        `Vocal and tempo/key controls need ${controls.length} characters; increase max_chars or simplify the vocal direction.`,
+      );
+    }
+    const descriptions = [genre_mood, instruments, production, dynamics_journey];
+    const descriptionBudget = Math.max(0, max_chars - controls.length - 2);
+    const shortened = softTrim(descriptions.join(", "), descriptionBudget);
+    style_field = [shortened, controls].filter(Boolean).join(", ");
+    const omitted = [
+      ["genre/mood", genre_mood],
+      ["instruments", instruments],
+      ["production", production],
+      ["dynamics journey", dynamics_journey],
+    ].filter(([, value]) => !shortened.includes(value)).map(([name]) => name);
+    quality_notes.push(
+      `Shortened descriptions: ${omitted.join(", ")}. Review the brief; vocal and requested tempo/key controls are retained.`,
+    );
+  }
   if (!dna.textures.length) {
     quality_notes.push("No textures in DNA — Style may feel generic; add instruments.");
   }
