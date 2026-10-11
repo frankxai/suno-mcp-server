@@ -230,8 +230,16 @@ tests/
 
 MIT
 
-## Provider-neutral session preparation (0.3)
+## Provider-neutral session preparation (0.3+)
 
 `prepare_music_session` validates an approved style/lyric session and compiles Suno supervised, Lyria clip/full, Eleven Music or fal MiniMax Music 3 packets. It preserves lyrics, enforces provider duration/instrumental constraints, bounds candidate count and estimates the render cost. It makes no network request and cannot authorize credits, submit jobs, download audio, listen or publish. Its owner field is a planning label; an executor must authenticate the owner and reserve a host-approved budget.
 
 Craft fundamentals and provider guidance are maintained in the public `frankxai/agentic-music-producer-os` docs. The packet compiler is canonical here in `src/engine/session-compiler.cjs`; an operated factory can vendor this pure compiler with a source revision/hash and parity tests. It contains no private canon or credentials.
+
+## Modular MCP runtime (0.4)
+
+The server uses the official `@modelcontextprotocol/server` package and Zod4. Its runtime dependency graph contains the server and shared protocol implementation; the modular client is a development dependency. The legacy SDK is installed only in the isolated compatibility consumer, not in the project or published runtime. No HTTP gateway or authorization service is started.
+
+The stdio entry uses [`serveStdio`](https://ts.sdk.modelcontextprotocol.io/v2/serving/stdio), which accepts legacy initialize clients and clients pinned to protocol2026-07-28. Tool names, Music DNA, prompt resources and prepared-only provider packets retain their existing contracts. For code that imports `createMusicMcpServer`, the returned SDK class now belongs to the v2 server package; v1 and v2 SDK instances must not be mixed. Version0.4 is a pre-1.0 compatibility boundary.
+
+From a source checkout, run `pnpm build` followed by `npm run verify:package`. Verification packs the real artifact, installs it in an empty consumer and exercises legacy SDK1.32.1, modular v2 legacy mode and modular v2 modern mode. It checks constrained briefs, denial and recovery, prepared-only authority, strict inputs, resources, prompts and process exit. No provider credentials or audio-generation requests are used. CI runs this on Windows and Linux with Node22 and24. The resulting receipt and tarball are retained as job artifacts; a passing run verifies that matrix, not a public npm release or an audio result.

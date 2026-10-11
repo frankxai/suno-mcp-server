@@ -1,11 +1,11 @@
 /**
  * Music MCP server — Phase 1 Prompt Strategy Engine
- * Uses official @modelcontextprotocol/sdk (stdio transport).
+ * Uses the official modular MCP server (dual-era stdio transport).
  *
  * Do not start network gateways here — stdio only.
  */
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { McpServer } from "@modelcontextprotocol/server";
+import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import { z } from "zod";
 import {
   handleMapMusicDna,
@@ -29,10 +29,10 @@ import {
   MusicDnaSchema,
 } from "./schemas/music-dna.js";
 
-import { SessionShape, handlePrepareMusicSession } from "./tools/session.js";
+import { SessionSchema, handlePrepareMusicSession } from "./tools/session.js";
 
 export const SERVER_NAME = "music-mcp";
-export const SERVER_VERSION = "0.3.0";
+export const SERVER_VERSION = "0.4.0";
 
 function jsonContent(data: unknown) {
   return {
@@ -100,30 +100,42 @@ export function createMusicMcpServer(): McpServer {
     version: SERVER_VERSION,
   });
 
-  server.tool("prepare_music_session", "Prepare a validated provider-neutral music packet; no API calls, credit authorization or audio verdict.", SessionShape, async (args) => {
-    try { return jsonContent(handlePrepareMusicSession(args)); }
-    catch (error) { return errorContent(error); }
-  });
+  server.registerTool(
+    "prepare_music_session",
+    {
+      description: "Prepare a validated provider-neutral music packet; no API calls, credit authorization or audio verdict.",
+      inputSchema: SessionSchema,
+    },
+    async (args) => {
+      try {
+        return jsonContent(handlePrepareMusicSession(args));
+      } catch (error) {
+        return errorContent(error);
+      }
+    },
+  );
 
   // ─── Tools: Phase 1 ───────────────────────────────────────────────
 
-  server.tool(
+  server.registerTool(
     "map_music_dna",
-    "Extract structured Music DNA from free text (optional image_url as text hint only — no media download). Returns emotion, genre, textures, energy arc, vocal persona, exclude styles, confidence.",
     {
-      text: z
-        .string()
-        .min(1)
-        .max(4000)
-        .describe("Free-text intent, vibe description, or image caption"),
-      image_url: z
-        .string()
-        .url()
-        .optional()
-        .describe("Optional image URL — Phase 1 text-hint only"),
-      genre_hint: z.string().max(120).optional(),
-      bpm_hint: z.number().int().min(40).max(240).optional(),
-      instrumental: z.boolean().optional().default(false),
+      description: "Extract structured Music DNA from free text (optional image_url as text hint only — no media download). Returns emotion, genre, textures, energy arc, vocal persona, exclude styles, confidence.",
+      inputSchema: z.object({
+        text: z
+          .string()
+          .min(1)
+          .max(4000)
+          .describe("Free-text intent, vibe description, or image caption"),
+        image_url: z
+          .string()
+          .url()
+          .optional()
+          .describe("Optional image URL — Phase 1 text-hint only"),
+        genre_hint: z.string().max(120).optional(),
+        bpm_hint: z.number().int().min(40).max(240).optional(),
+        instrumental: z.boolean().optional().default(false),
+      }),
     },
     async (args) => {
       try {
@@ -134,26 +146,28 @@ export function createMusicMcpServer(): McpServer {
     },
   );
 
-  server.tool(
+  server.registerTool(
     "build_style_field",
-    "Compose a full Suno Custom Style field from Music DNA (+ optional journey overrides). Quality target: seed library Neon Horizons / Liminal Tides.",
     {
-      dna: z
-        .object(DnaInputShape)
-        .describe("Structured Music DNA from map_music_dna"),
-      journey: z
-        .object({
-          intro: z.string().max(200).optional(),
-          build: z.string().max(200).optional(),
-          peak: z.string().max(200).optional(),
-          bridge: z.string().max(200).optional(),
-          outro: z.string().max(200).optional(),
-        })
-        .optional()
-        .describe("Optional dynamics journey overrides"),
-      max_chars: z.number().int().min(80).max(1000).optional().default(450),
-      include_bpm_key: z.boolean().optional().default(true),
-      include_exclude: z.boolean().optional().default(false),
+      description: "Compose a full Suno Custom Style field from Music DNA (+ optional journey overrides). Quality target: seed library Neon Horizons / Liminal Tides.",
+      inputSchema: z.object({
+        dna: z
+          .object(DnaInputShape)
+          .describe("Structured Music DNA from map_music_dna"),
+        journey: z
+          .object({
+            intro: z.string().max(200).optional(),
+            build: z.string().max(200).optional(),
+            peak: z.string().max(200).optional(),
+            bridge: z.string().max(200).optional(),
+            outro: z.string().max(200).optional(),
+          })
+          .optional()
+          .describe("Optional dynamics journey overrides"),
+        max_chars: z.number().int().min(80).max(1000).optional().default(450),
+        include_bpm_key: z.boolean().optional().default(true),
+        include_exclude: z.boolean().optional().default(false),
+      }),
     },
     async (args) => {
       try {
@@ -171,14 +185,16 @@ export function createMusicMcpServer(): McpServer {
     },
   );
 
-  server.tool(
+  server.registerTool(
     "suggest_keywords",
-    "Suggest vibe/DNA keywords for a vibe string, optional genre, and mood list.",
     {
-      vibe: z.string().min(1).max(200),
-      genre: z.string().max(120).optional(),
-      mood: z.array(z.string()).max(8).optional().default([]),
-      limit: z.number().int().min(3).max(24).optional().default(12),
+      description: "Suggest vibe/DNA keywords for a vibe string, optional genre, and mood list.",
+      inputSchema: z.object({
+        vibe: z.string().min(1).max(200),
+        genre: z.string().max(120).optional(),
+        mood: z.array(z.string()).max(8).optional().default([]),
+        limit: z.number().int().min(3).max(24).optional().default(12),
+      }),
     },
     async (args) => {
       try {
@@ -189,11 +205,13 @@ export function createMusicMcpServer(): McpServer {
     },
   );
 
-  server.tool(
+  server.registerTool(
     "analyze_intent",
-    "Score clarity of user intent vs Music DNA dimensions and seed library; return missing dimensions and suggestions.",
     {
-      intent_text: z.string().min(1).max(4000),
+      description: "Score clarity of user intent vs Music DNA dimensions and seed library; return missing dimensions and suggestions.",
+      inputSchema: z.object({
+        intent_text: z.string().min(1).max(4000),
+      }),
     },
     async (args) => {
       try {
@@ -204,12 +222,14 @@ export function createMusicMcpServer(): McpServer {
     },
   );
 
-  server.tool(
+  server.registerTool(
     "match_top_patterns",
-    "Find similar high-rated pattern cards and library entries for a free-text query.",
     {
-      query: z.string().min(1).max(500),
-      limit: z.number().int().min(1).max(10).optional().default(3),
+      description: "Find similar high-rated pattern cards and library entries for a free-text query.",
+      inputSchema: z.object({
+        query: z.string().min(1).max(500),
+        limit: z.number().int().min(1).max(10).optional().default(3),
+      }),
     },
     async (args) => {
       try {
@@ -222,7 +242,7 @@ export function createMusicMcpServer(): McpServer {
 
   // ─── Resources ────────────────────────────────────────────────────
 
-  server.resource(
+  server.registerResource(
     "library-prompts",
     RESOURCE_URIS.libraryPrompts,
     {
@@ -244,7 +264,7 @@ export function createMusicMcpServer(): McpServer {
   // Per-entry resources (static list from seed)
   for (const entry of listLibraryEntries()) {
     const uri = RESOURCE_URIS.libraryEntry(entry.id);
-    server.resource(
+    server.registerResource(
       `library-entry-${entry.id}`,
       uri,
       {
@@ -266,7 +286,7 @@ export function createMusicMcpServer(): McpServer {
     );
   }
 
-  server.resource(
+  server.registerResource(
     "musicdna-vocab",
     RESOURCE_URIS.musicDnaVocab,
     {
@@ -284,7 +304,7 @@ export function createMusicMcpServer(): McpServer {
     }),
   );
 
-  server.resource(
+  server.registerResource(
     "musicdna-vibe-maps",
     RESOURCE_URIS.musicDnaVibeMaps,
     {
@@ -302,7 +322,7 @@ export function createMusicMcpServer(): McpServer {
     }),
   );
 
-  server.resource(
+  server.registerResource(
     "musicdna-top-patterns",
     RESOURCE_URIS.musicDnaTopPatterns,
     {
@@ -322,11 +342,13 @@ export function createMusicMcpServer(): McpServer {
 
   // ─── Prompts ──────────────────────────────────────────────────────
 
-  server.prompt(
+  server.registerPrompt(
     "intent_to_dna",
-    "Guided articulation: turn vague creative intent into Music DNA dimensions.",
     {
-      raw_intent: z.string().describe("User's raw creative intent"),
+      description: "Guided articulation: turn vague creative intent into Music DNA dimensions.",
+      argsSchema: z.object({
+        raw_intent: z.string().describe("User's raw creative intent"),
+      }),
     },
     async ({ raw_intent }) => ({
       messages: [
@@ -359,14 +381,16 @@ export function createMusicMcpServer(): McpServer {
     }),
   );
 
-  server.prompt(
+  server.registerPrompt(
     "emotion_image_to_style",
-    "Translate an emotional image description into Style field components.",
     {
-      image_description: z
-        .string()
-        .describe("Description of the image or emotional visual"),
-      genre_hint: z.string().optional().describe("Optional genre hint"),
+      description: "Translate an emotional image description into Style field components.",
+      argsSchema: z.object({
+        image_description: z
+          .string()
+          .describe("Description of the image or emotional visual"),
+        genre_hint: z.string().optional().describe("Optional genre hint"),
+      }),
     },
     async ({ image_description, genre_hint }) => ({
       messages: [
@@ -399,7 +423,5 @@ export function createMusicMcpServer(): McpServer {
 }
 
 export async function startStdioServer(): Promise<void> {
-  const server = createMusicMcpServer();
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+  serveStdio(() => createMusicMcpServer());
 }

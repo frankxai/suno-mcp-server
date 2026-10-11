@@ -2,8 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { handlePrepareMusicSession as prepare } from "../src/tools/session.ts";
 import { createMusicMcpServer } from "../src/server.ts";
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { Client, InMemoryTransport } from "@modelcontextprotocol/client";
 
 const base={work_id:"take",owner:"FrankX",artist_profile_ref:"FrankX/session/v1",engine:"suno-supervised",
  style:"Close dry alto; swung garage-house; clean sub; short ending",lyrics:"[Chorus]\nLeave your coat here",
