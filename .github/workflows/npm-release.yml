@@ -1,0 +1,133 @@
+name: Release verified Suno package
+
+on:
+  workflow_dispatch:
+    inputs:
+      ci_run_id:
+        description: Successful main CI run for this exact main revision
+        required: true
+        type: string
+      operation:
+        description: Verify only, stage for npm approval, or publish after environment approval
+        required: true
+        default: verify
+        type: choice
+        options: [verify, stage, publish]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: suno-npm-production
+  cancel-in-progress: false
+
+env:
+  CI_RUN_ID: ${{ inputs.ci_run_id }}
+  RELEASE_OPERATION: ${{ inputs.operation }}
+
+jobs:
+  verify:
+    if: github.repository == 'frankxai/suno-mcp-server' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24.21.0'
+      - name: Validate immutable CI source and publication prerequisites
+        run: node scripts/release-package.mjs preflight
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          pattern: package-proof-*
+          run-id: ${{ inputs.ci_run_id }}
+          github-token: ${{ github.token }}
+          path: artifacts/ci
+          digest-mismatch: error
+      - name: Verify all four actual archives and select the publication bytes
+        run: node scripts/release-package.mjs prepare artifacts/ci artifacts/release
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: suno-release-${{ github.run_id }}-${{ github.sha }}
+          path: artifacts/release/
+          if-no-files-found: error
+          retention-days: 7
+
+  verify-public:
+    if: inputs.operation == 'publish'
+    needs: [verify, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24.21.0'
+      - run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: suno-release-${{ github.run_id }}-${{ github.sha }}
+          path: artifacts/release/
+          digest-mismatch: error
+      - name: Check registry bytes, native signatures and three fresh installed clients
+        shell: bash
+        run: |
+          export NPM_CLI_PATH="$(npm root --global)/npm/bin/npm-cli.js"
+          node scripts/release-package.mjs verify-registry artifacts/release artifacts/public
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: suno-public-verification-${{ github.run_id }}-${{ github.sha }}
+          path: artifacts/public/
+          if-no-files-found: warn
+          retention-days: 7
+
+  publish:
+    if: inputs.operation == 'stage' || inputs.operation == 'publish'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: npm-production
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24.21.0'
+      - run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: suno-release-${{ github.run_id }}-${{ github.sha }}
+          path: artifacts/release/
+          digest-mismatch: error
+      - name: Submit verified bytes through npm OIDC
+        shell: bash
+        run: |
+          export NPM_CLI_PATH="$(npm root --global)/npm/bin/npm-cli.js"
+          node scripts/release-package.mjs publish artifacts/release
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: suno-publication-${{ github.run_id }}-${{ github.sha }}
+          path: artifacts/release/
+          if-no-files-found: warn
+          retention-days: 7

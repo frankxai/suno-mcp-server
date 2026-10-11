@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches: [main]
-    paths: ['src/**', 'tests/**', 'package.json', 'package-lock.json', 'pnpm-lock.yaml', 'README.md', 'tsconfig.json', '.github/workflows/ci.yml']
+    paths: ['src/**', 'tests/**', 'scripts/**', 'docs/releases/**', 'package.json', 'package-lock.json', 'pnpm-lock.yaml', 'README.md', 'tsconfig.json', '.github/workflows/ci.yml', '.github/workflows/npm-release.yml']
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
-    paths: ['src/**', 'tests/**', 'package.json', 'package-lock.json', 'pnpm-lock.yaml', 'README.md', 'tsconfig.json', '.github/workflows/ci.yml']
+    paths: ['src/**', 'tests/**', 'scripts/**', 'docs/releases/**', 'package.json', 'package-lock.json', 'pnpm-lock.yaml', 'README.md', 'tsconfig.json', '.github/workflows/ci.yml', '.github/workflows/npm-release.yml']
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
@@ -40,6 +40,7 @@ jobs:
       - run: pnpm audit --audit-level moderate
       - run: pnpm typecheck
       - run: pnpm test
+      - run: node --test tests/release-package.test.mjs
       - run: pnpm build
       - name: Verify actual tarball and three installed MCP client modes
         run: npm run verify:package
