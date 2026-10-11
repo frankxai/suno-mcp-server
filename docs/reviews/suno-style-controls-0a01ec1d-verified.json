@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "review_type": "fresh_independent_adversarial_review",
+  "verdict": "PASS",
+  "metadata": {
+    "repository": "frankxai/suno-mcp-server",
+    "pr_number": 7,
+    "issue_number": 5,
+    "exact_head": "0a01ec1d1f48ad9e3332a9235ab0a0cb128c7740",
+    "base_commit": "835fa4ab031c62e42228f2bfa49160cee3c32189",
+    "candidate_branch": "agent/codex/suno-creator-constraints-20261011",
+    "provider": "Google Jules",
+    "model": null
+  },
+  "source_inventory": [
+    {
+      "filepath": "src/engine/style-composer.ts",
+      "size_bytes": 5589,
+      "sha256": "aa9ee734389b557df42ebbf68149b56e09c9f1761981568cf2747bebc5f0ddb4"
+    },
+    {
+      "filepath": "tests/style-constraints.test.ts",
+      "size_bytes": 6009,
+      "sha256": "78422dd0f184011dceca04c5bd97dff72074ec818e81ca5bf1701152ea4e0ce6"
+    }
+  ],
+  "environment": {
+    "node_version": "v22.22.1",
+    "pnpm_version": "10.28.0",
+    "working_directory": "/tmp/suno-mcp-eval-F5kY24",
+    "extraction_method": "git archive 0a01ec1d1f48ad9e3332a9235ab0a0cb128c7740"
+  },
+  "execution": {
+    "pnpm_install": {
+      "command": "pnpm install --frozen-lockfile",
+      "exit_code": 0,
+      "stdout": "Lockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +98\nProgress: resolved 98, reused 0, downloaded 95, added 62\nProgress: resolved 98, reused 0, downloaded 98, added 98, done\n\ndependencies:\n+ @modelcontextprotocol/sdk 1.29.0\n+ zod 3.25.76\n\ndevDependencies:\n+ @types/node 22.20.1\n+ tsx 4.23.1\n+ typescript 5.9.3\n\nDone in 2.3s using pnpm v10.28.0"
+    },
+    "typecheck": {
+      "command": "pnpm typecheck",
+      "exit_code": 0,
+      "stdout": "> @frankxai/suno-mcp-server@0.3.0 typecheck /tmp/suno-mcp-eval-F5kY24\n> tsc -p tsconfig.json --noEmit"
+    },
+    "test": {
+      "command": "pnpm test",
+      "exit_code": 0,
+      "total_tests": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "new_tests": 11,
+      "existing_accepted_tests": 12,
+      "summary": "23 pass, 0 fail, 0 skip across 5 test suites and 15 direct top-level subtests"
+    },
+    "build": {
+      "command": "pnpm build",
+      "exit_code": 0,
+      "stdout": "> @frankxai/suno-mcp-server@0.3.0 build /tmp/suno-mcp-eval-F5kY24\n> tsc -p tsconfig.json"
+    },
+    "npm_pack": {
+      "command": "npm pack --json",
+      "exit_code": 0,
+      "tarball_filename": "frankxai-suno-mcp-server-0.3.0.tgz",
+      "sha256": "f453e984031cc0b8ff3969c2d9b0bded34979c12d9004c2f35d6f167b840208b",
+      "integrity": "sha512-zjv2+jtX+DVVIxlvcEgKsLcZEaXkuVPhc4DFoVwQe4NNiqrLfsoUOYXx4i1DsmjEpgjnQYFAwoO3x4qTBp0X5Q==",
+      "unpacked_size_bytes": 191868
+    }
+  },
+  "consumer_verification": {
+    "consumer_directory": "/tmp/suno-mcp-consumer-r6Xj3X",
+    "mcp_sdk_version": "@modelcontextprotocol/sdk@1.32.1",
+    "transport": "StdioClientTransport",
+    "binary_path": "dist/index.js",
+    "tools_discovered": [
+      "prepare_music_session",
+      "map_music_dna",
+      "build_style_field",
+      "suggest_keywords",
+      "analyze_intent",
+      "match_top_patterns"
+    ],
+    "test_cases": [
+      {
+        "name": "valid_instrumental_and_tempo_budget_80",
+        "max_chars": 80,
+        "expected_substrings": [
+          "instrumental only, no vocals",
+          "92 BPM, D minor"
+        ],
+        "result_style_field": "Cinematic chamber electronica, instrumental only, no vocals, 92 BPM, D minor",
+        "char_count": 76,
+        "passed": true
+      },
+      {
+        "name": "impossible_vocal_control_budget_80",
+        "max_chars": 80,
+        "expected_error": "Vocal and tempo/key controls need 160 characters; increase max_chars or simplify the vocal direction.",
+        "is_error": true,
+        "passed": true
+      },
+      {
+        "name": "recovered_control_budget_450",
+        "max_chars": 450,
+        "expected_substrings": [
+          "preserve the original melody",
+          "92 BPM, D minor"
+        ],
+        "result_style_field": "Cinematic chamber electronica with analog synthesis and acoustic percussion for an evolving instrumental film cue, hopeful yet patient, expansive, soft bowed cello with sustained harmonics and gradual crescendos, felt piano arpeggios with spacious warm reverb and natural decay, female vocals, intimate expressive alto with breathy verses and powerful sustained chorus notes, no backing choir, preserve the original melody, 92 BPM, D minor",
+        "passed": true
+      }
+    ]
+  },
+  "coverage": {
+    "qualitative_statement": "The exact head changes in src/engine/style-composer.ts and tests/style-constraints.test.ts cover all critical vocal/instrumental pathways, BPM/key formatting, all 8 performance notes, gender and character combinations, budget calculation, softTrim logic, error boundaries, and quality notes generation. All 23 tests passed without skipping."
+  },
+  "limits_and_disclaimers": [
+    "Dependency advisories from issue #6 remain unaddressed.",
+    "Windows platform compatibility is unverified.",
+    "Real audio generation quality and audio artifact output are not evaluated (offline prompt workbench).",
+    "Customer readiness and commercial production launch require separate sign-off.",
+    "A source PASS does not authorize paid or public production deployment."
+  ]
+}
