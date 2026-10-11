@@ -13,7 +13,9 @@ It does not submit generation requests or grant tenant, billing or execution aut
    the common archive. It does not build or repack the package.
 3. Configure the legitimate package-specific npm trusted publisher and the
    `npm-production` GitHub environment. These are owner-controlled permissions;
-   this workflow does not create or alter them.
+   the helper only reads their configuration and never calls their creation,
+   permission-change or approval APIs. A workflow reference may cause GitHub to
+   create an empty environment; that is insufficient and fails publication checks.
 4. Dispatch the same workflow with `stage` or `publish`. GitHub environment
    approval and current-source checks occur before the npm submission. The
    publication job rechecks metadata and hashes after the approval wait.
