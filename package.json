@@ -1,13 +1,14 @@
 {
   "name": "@frankxai/suno-mcp-server",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "packageManager": "pnpm@10.28.0",
-  "description": "Music prompt workbench and offline provider packet compiler; no generation backend",
+  "description": "Music prompt workbench, sovereign lyric architecture & offline provider packet compiler; no generation backend",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "suno-mcp-server": "dist/index.js"
+    "suno-mcp-server": "dist/index.js",
+    "songcraft-mcp": "dist/index.js"
   },
   "files": [
     "dist",
@@ -20,8 +21,9 @@
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node --import tsx --test tests/*.test.ts",
+    "test": "node --import tsx --test tests/*.test.ts && node test/songcraft.test.mjs",
     "test:phase1": "node --import tsx --test tests/phase1.test.ts",
+    "test:songcraft": "node test/songcraft.test.mjs",
     "verify:package": "node tests/installed-consumer.mjs"
   },
   "keywords": [
@@ -31,6 +33,9 @@
     "music-dna",
     "prompt-strategy",
     "ai-music",
+    "songwriting",
+    "lyrics",
+    "anti-slop",
     "claude-code",
     "model-context-protocol",
     "starlight",
@@ -50,9 +55,9 @@
     "zod": "^4.6.6"
   },
   "devDependencies": {
+    "@modelcontextprotocol/client": "^2.3.1",
     "@types/node": "^22.13.10",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2",
-    "@modelcontextprotocol/client": "^2.3.1"
+    "typescript": "^5.8.2"
   }
 }
