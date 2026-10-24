@@ -185,9 +185,9 @@ The stdio entry uses `serveStdio`, which accepts legacy initialize clients and c
 
 ```bash
 pnpm install
-pnpm run typecheck
-pnpm run test
-pnpm run build
+pnpm typecheck
+pnpm test
+pnpm build
 ```
 
 ---
