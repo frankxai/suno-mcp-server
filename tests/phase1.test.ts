@@ -8,6 +8,7 @@ import { mapMusicDna } from "../src/engine/dna-mapper.ts";
 import { buildStyleField } from "../src/engine/style-composer.ts";
 import { analyzeIntent } from "../src/engine/intent-analyzer.ts";
 import { matchTopPatterns } from "../src/engine/pattern-matcher.ts";
+import { suggestKeywords } from "../src/engine/keyword-suggester.ts";
 import {
   listLibraryEntries,
   getLibraryEntry,
@@ -122,5 +123,52 @@ describe("analyze_intent + match_top_patterns", () => {
   it("matches library for neon query", () => {
     const { matches } = matchTopPatterns({ query: "neon synthwave digital nomad", limit: 5 });
     assert.ok(matches.length >= 1);
+  });
+});
+
+describe("suggestKeywords", () => {
+  it("provides vibe-mapped keywords for an exact vibe query", () => {
+    const result = suggestKeywords({
+      vibe: "neon night drive",
+      limit: 12
+    });
+
+    assert.equal(result.vibe_match, "neon night drive");
+    assert.ok(result.sources.includes("vibe-map:neon night drive"));
+    assert.ok(result.keywords.includes("neon city"));
+    assert.ok(result.keywords.includes("futuristic"));
+  });
+
+  it("provides genre cluster keywords when matching a known genre", () => {
+    const result = suggestKeywords({
+      vibe: "just playing around",
+      genre: "synthwave",
+      limit: 10
+    });
+
+    assert.ok(result.sources.includes("genre-cluster:synthwave"));
+    assert.ok(result.keywords.includes("cinematic synthwave"));
+    assert.ok(result.keywords.includes("outrun"));
+  });
+
+  it("matches emotion keywords when no vibe is matched", () => {
+    const result = suggestKeywords({
+      vibe: "something entirely unknown",
+      mood: ["energetic", "melancholic"],
+      limit: 10
+    });
+
+    assert.equal(result.vibe_match, null);
+    assert.ok(result.keywords.includes("energetic"));
+    assert.ok(result.keywords.includes("melancholic"));
+  });
+
+  it("respects the limit constraint", () => {
+    const result = suggestKeywords({
+      vibe: "neon night drive",
+      limit: 3
+    });
+
+    assert.equal(result.keywords.length, 3);
   });
 });
