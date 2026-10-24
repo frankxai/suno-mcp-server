@@ -22,10 +22,10 @@ test("respects the limit constraint for matches and library hits", () => {
 });
 
 test("ranks matches by score in descending order", () => {
-  const result = matchTopPatterns({ query: "ambient piano", limit: 10 });
-  if (result.matches.length > 1) {
-    for (let i = 0; i < result.matches.length - 1; i++) {
-      assert.ok(result.matches[i].score >= result.matches[i + 1].score);
-    }
+  // Use words guaranteed to hit multiple entries in the corpus:
+  const result = matchTopPatterns({ query: "ambient ocean liminal night drive", limit: 10 });
+  assert.ok(result.matches.length >= 2, `Expected at least two matches to test ranking, got ${result.matches.length}`);
+  for (let i = 0; i < result.matches.length - 1; i++) {
+    assert.ok(result.matches[i].score >= result.matches[i + 1].score);
   }
 });
