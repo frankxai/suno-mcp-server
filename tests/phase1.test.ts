@@ -1,6 +1,6 @@
 /**
  * Phase 1 unit tests — schemas + map_music_dna + build_style_field + library.
- * Run: npm run test:phase1  (after npm install)
+ * Run: pnpm test:phase1  (after pnpm install)
  */
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";

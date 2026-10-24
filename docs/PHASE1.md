@@ -91,10 +91,10 @@ docs/PHASE1.md             # this file
 
 ```bash
 cd C:/Users/frank/starlight/repos/.hermes-worktrees/suno-mcp-phase1
-pnpm install   # or npm install
-pnpm run typecheck
-pnpm run test:phase1
-pnpm run build
+pnpm install
+pnpm typecheck
+pnpm test:phase1
+pnpm build
 # Optional smoke (stdio; Ctrl+C): pnpm start
 ```
 
